@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <!-- {% if  cate %}
+        <h2>{{tag}} </h2>
+    {% endif %} -->
+    <h2>{{tag}}</h2>
+        {% for listing in listings %}
+            {% if listing.is_active %} 
+                <hr>
+                    <article class="media content-section">
+                        <img class="article-img" src="{{ listing.image}}" width="147" height="130">
+                        <div class="media-body">
+                        <h2><a class="article-title" href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h2>
+                        <p class="article-content">{{ listing.description }}</p>
+                        <h6><strong>Price :-</strong> ${{listing.current_bid}}</h6>
+                        <div class="article-metadata">
+                            <small class="text-muted">Created by <strong>{{ listing.creator }}</strong> on {{ listing.created_on|date:"M d, Y"}}</small>
+                        </div>
+                        </div>
+                </article>
+                <hr>
+            {% endif %}
+            {% empty %}
+            <h2>No Listings.</h2>
+        {% endfor %}
+{% endblock %}

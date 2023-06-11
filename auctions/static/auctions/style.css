@@ -1,0 +1,64 @@
+body {
+    padding: 10px;
+    margin-top: 5px;
+    background-color: rgb(196, 197, 196);
+}
+
+.media{
+    margin-left: 50px;
+}
+
+.media-body {
+    margin-left: 50px;
+}
+
+.article-img {
+    border: solid 0.5px rgb(145, 140, 140);
+  }
+
+hr{
+    height: 1px;
+    border-top : solid 1px rgb(211, 205, 205);
+}
+
+#comment_area{
+    border: solid 1px rgb(145, 140, 140);
+}
+
+#article{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+}
+
+.comments{
+    margin-top: 10px;
+}
+
+.comments p{
+    margin-left: 20px;
+}
+
+.image{
+    display: block;
+    width: 500px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.alert{
+    width: 30%;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.winner{
+    text-align: center;
+    margin: auto;
+    color: black;
+}
+
+#create{
+    margin-left: 48%;
+}

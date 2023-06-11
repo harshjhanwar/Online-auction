@@ -1,0 +1,98 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    {% if user != obj.creator %}
+        {% if obj.is_active %}
+            {% if  a%}
+                <a href="{% url 'remove' obj.id %}" role="button" class="btn btn-outline-danger">Remove item from watchlist</a>
+            {% else %}
+                <a href="{% url 'add' obj.id %}" role="button" class="btn btn-outline-success">Add item to watchlist</a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <article class="media content-section" id="article">
+        <img class="image article-img" src="{{ obj.image}}">
+        <div class="media-body">
+            <h2>{{ obj.title }}</h2>
+            <p class="article-content">{{ obj.description }}</p>
+            <!-- <h5><strong>Starting Price :-</strong> ${{obj.starting_bid}}</h5> -->
+            <h5><strong>Current Price :-</strong> ${{obj.current_bid}}</h5>
+            <div class="article-metadata">
+                <small class="text-muted">Created by <strong>{{ obj.creator }}</strong> on {{ obj.created_on|date:"M d, Y"}}</small>
+            </div>
+            <br>
+            {% if user == obj.creator %}
+                {% if obj.is_active %}
+                    <a href="{% url 'close' obj.id %}" role="button" class="btn btn-outline-danger ">Close</a>
+                {% endif %}
+            {% endif %}
+        </div>
+</article>
+
+    {% if obj.is_active %}
+        {% if user.is_authenticated %}
+            {% if user != obj.creator %}
+                <form action="{% url 'listing' obj.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">$</span>
+                        </div>
+                        <input class="form-control" autofocus type="number" name="bid" id="Bid" step="0.01"  placeholder="Bid">
+                          <div class="input-group-append">
+                          <input type="submit" name="place_bid"  class="btn btn-primary" value="Place bid">
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            {% endif %}
+        {% endif %}
+    
+    {% else %}
+        {% if winner %}
+                {% if winner.bidder == user %}
+                    <h3 class="winner">You have won this bid.</h3>
+                {% else %}
+                    <h3 class="winner">{{winner.bidder}} have won the bid.</h3>
+                {% endif %}
+        {% else %}
+            <h3 class="winner">No user have won the bid.</h3>
+        {% endif %}
+    {% endif %}
+    <h3>Details :- </h3>
+    <ul>
+        <li>Listed by :- {{obj.creator}}</li>
+        {% if obj.c %}
+        <li>Category :- <a href="{% url 'category' obj.c %}">{{obj.c}}</a></li>
+        {% else %}
+        <li>Category :- No category listed</li>
+        {% endif %}
+        <li>Listed on :- {{obj.created_on | date:"M d, Y"}}</li>
+    </ul>
+    <br>
+    <h3>Comments :- </h3>
+    <div class="comments">
+        {% for c in comment %}
+            <p>{{c.comment}} - <small>{{c.writer}}</small> <small class="text-muted">{{c.posted_date}}</small></p>
+            <hr>
+        {% endfor %}
+        
+        {% if user.is_authenticated %}            
+            <div class="comment">
+                <form action="{% url 'listing' obj.id %}" method="post">
+                    {% csrf_token %}
+                    <!-- <textarea name="comment" cols="10" rows="2" id="comment_area"></textarea>
+                    <input type="submit" class="btn btn-secondary" name="add_comment" value="Comment"> -->
+                    <div class="input-group mb-3">
+                        <textarea  class="form-control" name="comment" cols="10" rows="2" id="comment_area" placeholder="Enter your comment here"></textarea>  
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-secondary" name="add_comment" value="Comment">
+                        </div>
+                    </div>
+                    </div>
+                </form><br><br>
+            </div>
+        </div>
+        {% endif %}
+            
+{% endblock %}
